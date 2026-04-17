@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sre-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sre-api
+  template:
+    metadata:
+      labels:
+        app: sre-api
+    spec:
+      containers:
+        - name: api
+          image: sre-lab-api:latest
+          ports:
+            - containerPort: 5000
