@@ -1,62 +1,69 @@
 # sre-lab-api
 
-Uma API simples de gerenciamento de itens (CRUD básico) construída como para demonstrar uma arquitetura simples de SRE/DevOps, incluindo containerização, Kubernetes e CI/CD. 
+A simple item management API (basic CRUD) built to demonstrate a straightforward SRE/DevOps architecture, including containerization, Kubernetes, and CI/CD.
 
 ---
 
-## 🧭 Visão do Projeto
+## 🧭 Project Overview
 
-Este projeto não foca na complexidade da aplicação, mas sim na infraestrutura ao redor dela.
+This project is not focused on application complexity, but rather on the infrastructure surrounding it.
 
 Dev → GitHub → GitHub Actions → Docker → Registry → Kubernetes (Minikube)
 
 ---
 
-## 🚀 Objetivo
+## 🚀 Purpose
 
-Simular um ambiente real de produção com:
+Simulate a real-world production environment with:
 
-- API simples (Flask)
-- Testes automatizados (pytest)
-- Containerização (Docker)
-- Orquestração local (Minikube + Kubernetes)
-- Pipeline CI/CD (GitHub Actions)
+- Simple API (Flask)
+- Automated testing (pytest)
+- Containerization (Docker)
+- Local orchestration (Minikube + Kubernetes)
+- CI/CD pipeline (GitHub Actions)
 
 ---
 
-## 🧠 Aplicação
+## 🧠 Application
 
 ### Endpoints
 
 Health Check:
+
 GET /health
 
-Resposta:
+Response:
 
-`{
+```json
+{
   "status": "ok"
-}`
+}
+```
 
 GET /items
 
-`{
-  ["name": "item1"],
-  ["name": "item2"]
-}`
+```json
+[
+  { "name": "item1" },
+  { "name": "item2" }
+]
+```
 
 POST /items
 
-Body:
+Request Body:
 
-`{
+```json
+{
   "name": "item 1"
-}`
+}
+```
 
 ---
 
-## ⚙️ Rodando Localmente
+## ⚙️ Running Locally
 
-```
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -65,36 +72,46 @@ python app.py
 
 ---
 
-## 🧪 Testes
+## 🧪 Running Tests
 
-`pytest`
+```bash
+pytest
+```
 
 ---
 
 ## 🐳 Docker
 
-```
+```bash
 docker build -t sre-lab-api .
 docker run -p 5000:5000 sre-lab-api
 ```
 
-Com volume:
-`docker run -p 5000:5000 -v $(pwd):/app sre-lab-api`
+With a volume:
+
+```bash
+docker run -p 5000:5000 -v $(pwd):/app sre-lab-api
+```
 
 ---
 
 ## 🧩 Docker Compose
 
-`docker compose up`
+```bash
+docker compose up
+```
 
 ---
 
 ## ☸️ Kubernetes (Minikube)
 
-`minikube start`
+```bash
+minikube start
+```
 
 Deployment:
-```
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -117,7 +134,8 @@ spec:
 ```
 
 Service:
-```
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -132,7 +150,8 @@ spec:
 ```
 
 ConfigMap:
-```
+
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -141,15 +160,16 @@ data:
   ENV: "production"
 ```
 
-HPA:
-```
+Horizontal Pod Autoscaler (HPA):
+
+```yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: sre-lab-hpa
 spec:
   scaleTargetRef:
-    apiVersion: app/v1
+    apiVersion: apps/v1
     kind: Deployment
     name: sre-api
   minReplicas: 2
@@ -162,38 +182,45 @@ spec:
           type: Utilization
           averageUtilization: 50
 ```
+
 ---
 
 ## 🔁 CI/CD (GitHub Actions)
 
 Pipeline:
 
-Test → Build → Scan → Push → Deploy
+**Test → Build → Scan → Push → Deploy**
 
-Etapas:
+Steps:
 
-- Checkout code: actions/checkout@v4
-- Install dependencies: pip install -r requirements.txt
-- Run tests: PYTHONPATH=. pytest
-- Start Minikube: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64  \
-                  sudo install minikube-linux-amd64 /usr/local/bin/minikube  \
-                  minikube start --driver=docker
-- Deploy: kubectl apply -f deployment.yaml
+- Checkout code: `actions/checkout@v4`
+- Install dependencies: `pip install -r requirements.txt`
+- Run tests: `PYTHONPATH=. pytest`
+- Start Minikube:
+  ```bash
+  curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+  sudo install minikube-linux-amd64 /usr/local/bin/minikube
+  minikube start --driver=docker
+  ```
+- Deploy:
+  ```bash
+  kubectl apply -f deployment.yaml
+  ```
 
 ---
 
-## 🧠 Conceitos Demonstrados
+## 🧠 Concepts Demonstrated
 
-- 12-factor app
-- Containers imutáveis
-- Infraestrutura como código (IaC)
-- GitOps básico
-- CI/CD automatizado
-- Kubernetes declarativo
-- Observabilidade base
+- Twelve-Factor App principles
+- Immutable containers
+- Infrastructure as Code (IaC)
+- Basic GitOps
+- Automated CI/CD
+- Declarative Kubernetes
+- Basic observability
 
 ---
 
 ## 🧑‍💻 Adrian Cotrim
 
-Projeto de estudo focado em práticas modernas de SRE e DevOps.
+A study project focused on modern SRE and DevOps practices.
